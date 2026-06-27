@@ -13,7 +13,7 @@
 .head .brand{display:inline-block;background:#14532d;color:#fff;font-size:17px;font-weight:800;letter-spacing:1px;padding:8px 22px;border-radius:999px;margin-bottom:18px}
 .head .guide{margin:14px auto 0;max-width:520px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:13px;line-height:1.7;border-radius:12px;padding:13px 16px;text-align:left}
 .head .guide .gt{display:block;font-weight:800;margin-bottom:6px}
-.notice-box{background:#fffbeb;border:1px solid #fde68a;color:#92400e;font-size:12.5px;line-height:1.7;border-radius:12px;padding:13px 15px;margin-top:14px}
+.notice-box{background:#fffbeb;border:1px solid #fde68a;color:#92400e;font-size:12.5px;line-height:1.7;border-radius:12px;padding:14px 16px;margin:18px 0 22px}
 .notice-box .t{font-weight:800;margin-bottom:5px;display:block}
 .card{background:#fff;border:1px solid #e7e9ee;border-radius:18px;padding:22px;box-shadow:0 2px 10px rgba(0,0,0,.04);margin-bottom:14px}
 .steps{display:flex;gap:6px;justify-content:center;margin-bottom:16px;font-size:12px;color:#94a3b8}
@@ -27,11 +27,12 @@
 .teacher>*{position:relative;z-index:1}
 .avatar{width:62px;height:62px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:800;color:#fff;box-shadow:0 4px 12px rgba(20,83,45,.28);border:3px solid #fff;background:linear-gradient(135deg,#166534,#15803d)}
 .teacher .info h3{margin:6px 0 8px;font-size:17px;font-weight:800;letter-spacing:-.3px}
-.teacher .pick{margin-top:14px;font-size:12.5px;font-weight:700;color:#15803d;background:#f0fdf4;border:1px solid #bbf7d0;padding:7px 0;border-radius:9px;width:100%;transition:.15s}
+.teacher .info{flex:1 1 auto;display:flex;flex-direction:column}
+.teacher .pick{margin-top:auto;font-size:12.5px;font-weight:700;color:#15803d;background:#f0fdf4;border:1px solid #bbf7d0;padding:9px 0;border-radius:9px;width:100%;transition:.15s}
 .teacher:hover .pick{background:#14532d;color:#fff;border-color:#14532d}
 .teacher .info p{margin:0;font-size:12.5px;color:#64748b;line-height:1.5}
 .teacher .info .ttitle{display:inline-block;font-weight:700;color:#166534;font-size:12px;margin:0 0 10px;background:#dcfce7;padding:3px 11px;border-radius:999px}
-.teacher .info .tlines{list-style:none;margin:0;padding:0;text-align:left;display:inline-block}
+.teacher .info .tlines{list-style:none;margin:0 0 6px;padding:0;text-align:left;display:inline-block}
 .teacher .info .tlines li{font-size:12px;color:#475569;line-height:1.7;padding-left:13px;position:relative}
 .teacher .info .tlines li::before{content:'✓';position:absolute;left:0;color:#16a34a;font-size:10px;font-weight:700}
 .teacher .go{display:none}
@@ -40,6 +41,10 @@ h2.sec{font-size:18px;margin:0 0 14px}
 .modeseg{display:flex;gap:8px;margin-bottom:16px}
 .modeseg button{flex:1;padding:11px;font-size:14px;font-weight:700;border-radius:10px;border:1.5px solid #d1d5db;background:#fff;color:#475569;cursor:pointer}
 .modeseg button.on{border-color:#14532d;background:#14532d;color:#fff}
+.monthseg{display:flex;gap:8px;margin-bottom:16px}
+.monthseg.hidden{display:none}
+.monthseg button{flex:1;padding:10px;font-size:14px;font-weight:700;border-radius:10px;border:1.5px solid #d1d5db;background:#fff;color:#475569;cursor:pointer}
+.monthseg button.on{border-color:#15803d;background:#f0fdf4;color:#15803d}
 .daygroup{margin-bottom:18px}
 .daygroup .d{font-size:14px;font-weight:700;margin-bottom:8px;color:#334155}
 .times{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
@@ -53,9 +58,9 @@ label{font-weight:700;font-size:13px;display:block;margin:0 0 6px}
 input{font-size:15px;border-radius:10px;border:1px solid #d1d5db;padding:12px;width:100%;margin-bottom:14px}
 .summary{background:#f1f5f9;border-radius:12px;padding:14px;font-size:14px;margin-bottom:16px;line-height:1.7}
 .summary b{font-weight:700}
-.btn{width:100%;padding:15px;border:none;border-radius:12px;background:#14532d;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+.btn{width:100%;padding:16px;border:none;border-radius:12px;background:#14532d;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
 .btn:disabled{background:#cbd5e1}
-.note{font-size:12px;color:#94a3b8;text-align:center;margin-top:10px}
+.note{font-size:12px;color:#94a3b8;text-align:center;margin-top:14px;margin-bottom:4px}
 .hidden{display:none}
 .done{text-align:center;padding:14px 0}
 .done .ico{font-size:48px}
@@ -86,6 +91,7 @@ input{font-size:15px;border-radius:10px;border:1px solid #d1d5db;padding:12px;wi
       <button class="back" onclick="goStep(1)">‹ 선생님 다시 선택</button>
       <h2 class="sec" id="s2title"></h2>
       <div class="modeseg" id="modeSeg"></div>
+      <div class="monthseg" id="monthSeg"></div>
       <div id="timeList"></div>
     </div>
   </div>
@@ -128,7 +134,9 @@ const PROFILES = {
     lines:[
       '전 건국대학교 입학사정관 (14년)',
       '단국대학교 입학사정관',
-      '컨설팅 경력 10년 이상'
+      '한국항공전문학교 / 대치 M사 컨설팅',
+      '컨설팅 경력 10년 이상',
+      '학생 맞춤형 생기부-대입 전형 설계 전문'
     ] },
   '박장희': { color:'#166534', grad:'linear-gradient(135deg,#166534,#16a34a)', title:'전직 입학사정관',
     lines:[
@@ -151,7 +159,7 @@ const PROFILES = {
 const DEFAULT_COLOR = '#64748b';
 let allSlots = [];      // 전체 빈 시간
 let teachers = [];
-let sel = { teacher:null, mode:null, slot:null };
+let sel = { teacher:null, mode:null, slot:null, month:null };
 
 function api(body){return fetch('/api/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(async r=>{let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw new Error(d.error||('서버 오류 '+r.status));return d})}
 function pad(n){return String(n).padStart(2,'0')}
@@ -180,31 +188,49 @@ function renderTeachers(){
     return '<div class="teacher" onclick="pickTeacher(\''+t.replace(/'/g,"\\'")+'\')"><div class="avatar" style="background:'+grad+'">'+avatarChar(showName(t))+'</div><div class="info"><h3>'+showName(t)+' 선생님</h3>'+sub+lines+'</div><div class="pick">예약하기 ›</div></div>';
   }).join('')+'</div></div>';
 }
-function pickTeacher(t){sel.teacher=t;sel.mode=null;sel.slot=null;
+function pickTeacher(t){sel.teacher=t;sel.mode=null;sel.slot=null;sel.month=null;
   const my=allSlots.filter(s=>s.teacher===t);
   const modes=Array.from(new Set(my.map(s=>s.mode).filter(Boolean)));
   // 모드 세그먼트
   const seg=document.getElementById('modeSeg');
   if(modes.length>1){
     sel.mode=null;
-    seg.innerHTML='<button onclick="pickMode(\'\')" class="on" id="segAll">전체</button>'+modes.map(m=>'<button onclick="pickMode(\''+m+'\')">'+(m==='온라인'?'비대면':m)+'</button>').join('');
+    seg.innerHTML='<button onclick="pickMode(\'\')" class="on">전체</button>'+modes.map(m=>'<button onclick="pickMode(\''+m+'\')">'+(m==='온라인'?'비대면 상담':'대면 상담')+'</button>').join('');
     seg.classList.remove('hidden');
   }else if(modes.length===1){
     sel.mode=null; seg.classList.add('hidden');
   }else{ seg.classList.add('hidden'); }
+  // 월 세그먼트
+  renderMonthSeg();
   document.getElementById('s2title').innerText=showName(t)+' 선생님 · 예약 가능 시간';
   renderTimes();
   goStep(2);
 }
+function renderMonthSeg(){
+  const seg=document.getElementById('monthSeg');
+  let my=allSlots.filter(s=>s.teacher===sel.teacher);
+  if(sel.mode) my=my.filter(s=>s.mode===sel.mode);
+  const months=Array.from(new Set(my.map(s=>s.date.slice(0,7)))).sort();
+  if(months.length<=1){ seg.classList.add('hidden'); sel.month=null; return; }
+  if(sel.month && !months.includes(sel.month)) sel.month=null;
+  seg.classList.remove('hidden');
+  seg.innerHTML='<button onclick="pickMonth(\'\')" class="'+(!sel.month?'on':'')+'">전체</button>'+months.map(m=>{
+    const label=Number(m.slice(5,7))+'월';
+    return '<button onclick="pickMonth(\''+m+'\')" class="'+(sel.month===m?'on':'')+'">'+label+'</button>';
+  }).join('');
+}
+function pickMonth(m){sel.month=m||null;renderMonthSeg();renderTimes();}
 function pickMode(m){sel.mode=m||null;
   document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.remove('on'));
   event.target.classList.add('on');
+  renderMonthSeg();
   renderTimes();
 }
 function renderTimes(){
   const box=document.getElementById('timeList');
   let my=allSlots.filter(s=>s.teacher===sel.teacher);
   if(sel.mode) my=my.filter(s=>s.mode===sel.mode);
+  if(sel.month) my=my.filter(s=>s.date.slice(0,7)===sel.month);
   my.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   if(!my.length){box.innerHTML='<div class="empty">선택 가능한 시간이 없습니다.</div>';return}
   // 날짜별 그룹
