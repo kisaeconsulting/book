@@ -108,7 +108,7 @@ input{font-size:15px;border-radius:10px;border:1px solid #d1d5db;padding:12px;wi
       <label>예약자 이름 *</label><input id="pName" placeholder="예: 홍길동"/>
       <label>연락처 *</label><input id="pPhone" placeholder="예: 010-1234-5678" inputmode="tel"/>
       <label>학생명</label><input id="pStudent" placeholder="예: 홍철수 (선택)"/>
-      <label>진행 방식 *</label>
+      <label id="pModeLabel">진행 방식 *</label>
       <div class="modeseg" id="pModeSeg" style="margin-bottom:14px"></div>
       <p class="modehint" id="pModeHint"></p>
       <div class="notice-box"><span class="t">⚠ 예약 전 안내</span>· 대면 상담은 학원으로 방문해 주셔야 합니다.<br>· 예약 후 시간 변경은 학원으로 문의 부탁드립니다.</div>
@@ -259,18 +259,20 @@ function pickTime(s){sel.slot=s;
 function setupModeChoice(s){
   const seg=document.getElementById('pModeSeg');
   const hint=document.getElementById('pModeHint');
-  if(s.mode==='대면'){
+  // 강선구 선생님만 정보칸에서 대면/비대면 선택. 나머지는 시간에 정해진 방식 고정.
+  if(sel.teacher==='강선구'){
     sel.chosenMode='대면';
     seg.innerHTML='<button type="button" class="on" onclick="pickPMode(\'대면\')">대면 상담</button><button type="button" onclick="pickPMode(\'비대면\')">비대면 상담</button>';
-    hint.innerText='이 시간은 대면·비대면 모두 가능합니다. 원하시는 방식을 선택하세요.';
-  }else if(s.mode==='온라인'){
-    sel.chosenMode='비대면';
-    seg.innerHTML='<button type="button" class="on" onclick="pickPMode(\'비대면\')">비대면 상담</button>';
-    hint.innerText='이 시간은 비대면 상담만 가능합니다.';
+    seg.style.display='';
+    document.getElementById('pModeLabel').style.display='';
+    hint.style.display='';
+    hint.innerText='대면·비대면 중 원하시는 방식을 선택하세요.';
   }else{
-    sel.chosenMode='';
-    seg.innerHTML='<button type="button" class="on" onclick="pickPMode(\'대면\')">대면 상담</button><button type="button" onclick="pickPMode(\'비대면\')">비대면 상담</button>';
-    hint.innerText='';
+    // 시간에 지정된 방식 그대로 사용 (온라인→비대면 / 대면→대면)
+    sel.chosenMode = s.mode==='온라인' ? '비대면' : (s.mode==='대면' ? '대면' : '');
+    seg.style.display='none';
+    document.getElementById('pModeLabel').style.display='none';
+    hint.style.display='none';
   }
 }
 function pickPMode(m){sel.chosenMode=m;
