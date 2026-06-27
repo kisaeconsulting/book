@@ -19,7 +19,8 @@
 .steps{display:flex;gap:6px;justify-content:center;margin-bottom:16px;font-size:12px;color:#94a3b8}
 .steps b{color:#14532d}
 .steps span{padding:0 6px}
-.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:680px){.tgrid{grid-template-columns:1fr}}
 .teacher{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:18px 16px;border:1.5px solid #e7e9ee;border-radius:14px;cursor:pointer;transition:.15s}
 .teacher:hover{border-color:#14532d;background:#fafafa}
 .avatar{width:52px;height:52px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff}
