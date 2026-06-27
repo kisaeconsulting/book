@@ -19,17 +19,21 @@
 .steps{display:flex;gap:6px;justify-content:center;margin-bottom:16px;font-size:12px;color:#94a3b8}
 .steps b{color:#14532d}
 .steps span{padding:0 6px}
-.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 @media(max-width:680px){.tgrid{grid-template-columns:1fr}}
-.teacher{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:18px 16px;border:1.5px solid #e7e9ee;border-radius:14px;cursor:pointer;transition:.15s}
-.teacher:hover{border-color:#14532d;background:#fafafa}
-.avatar{width:52px;height:52px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff}
-.teacher .info h3{margin:0 0 6px;font-size:16px}
+.teacher{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:26px 18px 22px;border:1px solid #e7ebe7;border-radius:18px;cursor:pointer;background:#fff;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.teacher::before{content:'';position:absolute;top:0;left:0;right:0;height:54px;background:linear-gradient(135deg,#dcfce7 0%,#f0fdf4 100%);z-index:0}
+.teacher:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(20,83,45,.14);border-color:#86efac}
+.teacher>*{position:relative;z-index:1}
+.avatar{width:62px;height:62px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:800;color:#fff;box-shadow:0 4px 12px rgba(20,83,45,.28);border:3px solid #fff;background:linear-gradient(135deg,#166534,#15803d)}
+.teacher .info h3{margin:6px 0 8px;font-size:17px;font-weight:800;letter-spacing:-.3px}
+.teacher .pick{margin-top:14px;font-size:12.5px;font-weight:700;color:#15803d;background:#f0fdf4;border:1px solid #bbf7d0;padding:7px 0;border-radius:9px;width:100%;transition:.15s}
+.teacher:hover .pick{background:#14532d;color:#fff;border-color:#14532d}
 .teacher .info p{margin:0;font-size:12.5px;color:#64748b;line-height:1.5}
-.teacher .info .ttitle{font-weight:700;color:#166534;font-size:13px;margin:0 0 8px}
+.teacher .info .ttitle{display:inline-block;font-weight:700;color:#166534;font-size:12px;margin:0 0 10px;background:#dcfce7;padding:3px 11px;border-radius:999px}
 .teacher .info .tlines{list-style:none;margin:0;padding:0;text-align:left;display:inline-block}
-.teacher .info .tlines li{font-size:12px;color:#64748b;line-height:1.6;padding-left:12px;position:relative}
-.teacher .info .tlines li::before{content:'·';position:absolute;left:2px;color:#9ca3af}
+.teacher .info .tlines li{font-size:12px;color:#475569;line-height:1.7;padding-left:13px;position:relative}
+.teacher .info .tlines li::before{content:'✓';position:absolute;left:0;color:#16a34a;font-size:10px;font-weight:700}
 .teacher .go{display:none}
 h2.sec{font-size:18px;margin:0 0 14px}
 .back{background:none;border:none;color:#15803d;font-size:14px;cursor:pointer;padding:0;margin-bottom:12px}
@@ -120,13 +124,13 @@ const RANGE = { start: '2026-07-01', end: '2026-09-11' };
 const DISPLAY_NAME = { '박장희': '박진우', '조원기': '임현우' };
 function showName(name){return DISPLAY_NAME[name]||name}
 const PROFILES = {
-  '강선구': { color:'#166534', title:'전직 입학사정관',
+  '강선구': { color:'#166534', grad:'linear-gradient(135deg,#15803d,#22c55e)', title:'전직 입학사정관',
     lines:[
       '전 건국대학교 입학사정관 (14년)',
       '단국대학교 입학사정관',
       '컨설팅 경력 10년 이상'
     ] },
-  '박장희': { color:'#166534', title:'전직 입학사정관',
+  '박장희': { color:'#166534', grad:'linear-gradient(135deg,#166534,#16a34a)', title:'전직 입학사정관',
     lines:[
       '전 건국대·동국대·숭실대·강남대 전임 입학사정관 출신',
       '동국대학교 교육학박사 (수학교육 전공)',
@@ -136,7 +140,7 @@ const PROFILES = {
       '한국교육개발원 연구위원',
       '한국교육학술정보원 연구원'
     ] },
-  '조원기': { color:'#15803d', title:'전직 입학사정관',
+  '조원기': { color:'#15803d', grad:'linear-gradient(135deg,#0f766e,#14b8a6)', title:'전직 입학사정관',
     lines:[
       '전 단국대학교 입학사정관',
       '입학사정관 및 컨설팅 경력 16년차',
@@ -170,7 +174,10 @@ function renderTeachers(){
   if(!teachers.length){box.innerHTML='<div class="card"><div class="empty">현재 예약 가능한 선생님이 없습니다.</div></div>';return}
   box.innerHTML='<div class="card"><div class="tgrid">'+teachers.map(t=>{
     const p=profile(t);
-    return '<div class="teacher" onclick="pickTeacher(\''+t.replace(/'/g,"\\'")+'\')"><div class="avatar" style="background:'+p.color+'">'+avatarChar(t)+'</div><div class="info"><h3>'+t+' 선생님</h3><p>'+p.desc+'</p></div></div>';
+    const sub=p.title?'<p class="ttitle">'+p.title+'</p>':'';
+    const lines=(p.lines&&p.lines.length)?'<ul class="tlines">'+p.lines.map(l=>'<li>'+l+'</li>').join('')+'</ul>':'';
+    const grad=p.grad||('linear-gradient(135deg,'+p.color+','+p.color+')');
+    return '<div class="teacher" onclick="pickTeacher(\''+t.replace(/'/g,"\\'")+'\')"><div class="avatar" style="background:'+grad+'">'+avatarChar(showName(t))+'</div><div class="info"><h3>'+showName(t)+' 선생님</h3>'+sub+lines+'</div><div class="pick">예약하기 ›</div></div>';
   }).join('')+'</div></div>';
 }
 function pickTeacher(t){sel.teacher=t;sel.mode=null;sel.slot=null;
