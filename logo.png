@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>상담 예약</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f6f7f9;color:#0f172a;min-height:100vh;padding:20px}
+.wrap{max-width:680px;margin:0 auto}
+.head{text-align:center;margin-bottom:18px}
+.head h1{margin:0;font-size:24px}
+.head p{color:#64748b;font-size:13px;margin:6px 0 0}
+.head .logo{width:84px;height:84px;display:block;margin:0 auto 10px;object-fit:contain}
+.head .brand{display:inline-block;background:#14532d;color:#fff;font-size:13px;font-weight:800;letter-spacing:.5px;padding:5px 14px;border-radius:999px;margin-bottom:10px}
+.head .guide{margin:14px auto 0;max-width:520px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:13px;line-height:1.7;border-radius:12px;padding:13px 16px;text-align:left}
+.head .guide .gt{display:block;font-weight:800;margin-bottom:6px}
+.notice-box{background:#fffbeb;border:1px solid #fde68a;color:#92400e;font-size:12.5px;line-height:1.7;border-radius:12px;padding:13px 15px;margin-top:14px}
+.notice-box .t{font-weight:800;margin-bottom:5px;display:block}
+.card{background:#fff;border:1px solid #e7e9ee;border-radius:18px;padding:22px;box-shadow:0 2px 10px rgba(0,0,0,.04);margin-bottom:14px}
+.steps{display:flex;gap:6px;justify-content:center;margin-bottom:16px;font-size:12px;color:#94a3b8}
+.steps b{color:#14532d}
+.steps span{padding:0 6px}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.teacher{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:18px 16px;border:1.5px solid #e7e9ee;border-radius:14px;cursor:pointer;transition:.15s}
+.teacher:hover{border-color:#14532d;background:#fafafa}
+.avatar{width:52px;height:52px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff}
+.teacher .info h3{margin:0 0 6px;font-size:16px}
+.teacher .info p{margin:0;font-size:12.5px;color:#64748b;line-height:1.5}
+.teacher .info .ttitle{font-weight:700;color:#166534;font-size:13px;margin:0 0 8px}
+.teacher .info .tlines{list-style:none;margin:0;padding:0;text-align:left;display:inline-block}
+.teacher .info .tlines li{font-size:12px;color:#64748b;line-height:1.6;padding-left:12px;position:relative}
+.teacher .info .tlines li::before{content:'·';position:absolute;left:2px;color:#9ca3af}
+.teacher .go{display:none}
+h2.sec{font-size:18px;margin:0 0 14px}
+.back{background:none;border:none;color:#15803d;font-size:14px;cursor:pointer;padding:0;margin-bottom:12px}
+.modeseg{display:flex;gap:8px;margin-bottom:16px}
+.modeseg button{flex:1;padding:11px;font-size:14px;font-weight:700;border-radius:10px;border:1.5px solid #d1d5db;background:#fff;color:#475569;cursor:pointer}
+.modeseg button.on{border-color:#14532d;background:#14532d;color:#fff}
+.daygroup{margin-bottom:18px}
+.daygroup .d{font-size:14px;font-weight:700;margin-bottom:8px;color:#334155}
+.times{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.time{padding:11px 6px;text-align:center;font-size:14px;font-weight:700;border:1.5px solid #d7dbe2;border-radius:10px;background:#fff;cursor:pointer;transition:.12s}
+.time:hover{border-color:#14532d}
+.time .mt{display:block;font-size:10px;font-weight:600;margin-top:3px}
+.time.online{color:#1e40af}.time.online .mt{color:#2563eb}
+.time.offline{color:#9a3412}.time.offline .mt{color:#ea580c}
+.empty{color:#94a3b8;font-size:14px;text-align:center;padding:30px 0}
+label{font-weight:700;font-size:13px;display:block;margin:0 0 6px}
+input{font-size:15px;border-radius:10px;border:1px solid #d1d5db;padding:12px;width:100%;margin-bottom:14px}
+.summary{background:#f1f5f9;border-radius:12px;padding:14px;font-size:14px;margin-bottom:16px;line-height:1.7}
+.summary b{font-weight:700}
+.btn{width:100%;padding:15px;border:none;border-radius:12px;background:#14532d;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+.btn:disabled{background:#cbd5e1}
+.note{font-size:12px;color:#94a3b8;text-align:center;margin-top:10px}
+.hidden{display:none}
+.done{text-align:center;padding:14px 0}
+.done .ico{font-size:48px}
+.done h2{margin:10px 0 6px}
+.done p{color:#475569;font-size:14px;line-height:1.7}
+.err{background:#fef2f2;color:#b91c1c;border-radius:10px;padding:12px;font-size:13px;margin-bottom:12px}
+.loading{text-align:center;color:#94a3b8;padding:30px 0}
+.mtag{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:6px;margin-left:4px}
+.mtag.online{background:#dbeafe;color:#1e40af}.mtag.offline{background:#ffedd5;color:#9a3412}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head"><img class="logo" src="logo.png" alt="입시의기세 로고"/><div class="brand">입시의기세</div><h1>재원생 전용 수시컨설팅 예약</h1><p>원하는 선생님과 시간을 선택해 예약하세요</p>
+    <div class="guide"><span class="gt">📌 안내</span><b>대면 상담 가능 시간</b>에는 비대면으로 상담 진행도 가능하지만, <b>비대면 상담 시간</b>에는 대면 상담 진행이 불가합니다.<br><br>예약 후 시간 변경이 필요하실 경우 학원으로 문의 부탁드리며, 일정에 따라 변경이 어려울 수 있는 점 양해 부탁드립니다.</div>
+  </div>
+
+  <!-- STEP 1: 선생님 선택 -->
+  <div id="step1">
+    <div class="steps"><b>1 선생님</b><span>›</span>2 시간<span>›</span>3 정보</div>
+    <div id="teacherList"><div class="loading">불러오는 중...</div></div>
+  </div>
+
+  <!-- STEP 2: 시간 선택 -->
+  <div id="step2" class="hidden">
+    <div class="steps">1 선생님<span>›</span><b>2 시간</b><span>›</span>3 정보</div>
+    <div class="card">
+      <button class="back" onclick="goStep(1)">‹ 선생님 다시 선택</button>
+      <h2 class="sec" id="s2title"></h2>
+      <div class="modeseg" id="modeSeg"></div>
+      <div id="timeList"></div>
+    </div>
+  </div>
+
+  <!-- STEP 3: 정보 입력 -->
+  <div id="step3" class="hidden">
+    <div class="steps">1 선생님<span>›</span>2 시간<span>›</span><b>3 정보</b></div>
+    <div class="card">
+      <button class="back" onclick="goStep(2)">‹ 시간 다시 선택</button>
+      <h2 class="sec">예약자 정보</h2>
+      <div class="summary" id="bookSummary"></div>
+      <div id="formErr"></div>
+      <label>예약자 이름 *</label><input id="pName" placeholder="예: 홍길동"/>
+      <label>연락처 *</label><input id="pPhone" placeholder="예: 010-1234-5678" inputmode="tel"/>
+      <label>학생명</label><input id="pStudent" placeholder="예: 홍철수 (선택)"/>
+      <div class="notice-box"><span class="t">⚠ 예약 전 안내</span>· 대면 상담은 학원으로 방문해 주셔야 합니다.<br>· 예약 후 시간 변경은 학원으로 문의 부탁드립니다.</div>
+      <button class="btn" id="submitBtn" onclick="submit()">예약 확정하기</button>
+      <p class="note">확정하면 선택한 시간이 바로 예약됩니다.</p>
+    </div>
+  </div>
+
+  <!-- DONE -->
+  <div id="stepDone" class="hidden">
+    <div class="card done">
+      <div class="ico">✅</div>
+      <h2>예약이 완료되었습니다</h2>
+      <p id="doneText"></p>
+      <button class="btn" style="margin-top:16px" onclick="location.reload()">처음으로</button>
+    </div>
+  </div>
+</div>
+<script>
+const RANGE = { start: '2026-07-01', end: '2026-09-11' };
+// 선생님 임시 소개 (나중에 수정하세요)
+// 학부모 화면에서만 보이는 표시 이름 (캘린더/내부앱은 원래 이름 유지)
+const DISPLAY_NAME = { '박장희': '박진우', '조원기': '임현우' };
+function showName(name){return DISPLAY_NAME[name]||name}
+const PROFILES = {
+  '강선구': { color:'#166534', title:'전직 입학사정관',
+    lines:[
+      '전 건국대학교 입학사정관 (14년)',
+      '단국대학교 입학사정관',
+      '컨설팅 경력 10년 이상'
+    ] },
+  '박장희': { color:'#166534', title:'전직 입학사정관',
+    lines:[
+      '전 건국대·동국대·숭실대·강남대 전임 입학사정관 출신',
+      '동국대학교 교육학박사 (수학교육 전공)',
+      '단국대학교 연구교수',
+      '제주대학교 책임연구원',
+      '한국대학교육협의회 연구원',
+      '한국교육개발원 연구위원',
+      '한국교육학술정보원 연구원'
+    ] },
+  '조원기': { color:'#15803d', title:'전직 입학사정관',
+    lines:[
+      '전 단국대학교 입학사정관',
+      '입학사정관 및 컨설팅 경력 16년차',
+      '고교 교사 경력 10년',
+      '학생 맞춤형 생기부-대입 전형 설계 전문'
+    ] }
+};
+const DEFAULT_COLOR = '#64748b';
+let allSlots = [];      // 전체 빈 시간
+let teachers = [];
+let sel = { teacher:null, mode:null, slot:null };
+
+function api(body){return fetch('/api/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(async r=>{let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw new Error(d.error||('서버 오류 '+r.status));return d})}
+function pad(n){return String(n).padStart(2,'0')}
+function formatDate(s){const d=new Date(s+'T00:00:00');const w=['일','월','화','수','목','금','토'][d.getDay()];return (d.getMonth()+1)+'월 '+d.getDate()+'일('+w+')'}
+function avatarChar(name){return name? name.charAt(0):'?'}
+function profile(name){return PROFILES[name]||{color:DEFAULT_COLOR,title:'',lines:[]}}
+
+async function loadAll(){
+  try{
+    const data=await api({action:'publicList',range:RANGE});
+    allSlots=data.slots||[];
+    teachers=(data.teachers&&data.teachers.length)?data.teachers:Array.from(new Set(allSlots.map(s=>s.teacher))).sort();
+    renderTeachers();
+  }catch(err){
+    document.getElementById('teacherList').innerHTML='<div class="card"><div class="err">예약 정보를 불러오지 못했습니다.<br>'+err.message+'</div></div>';
+  }
+}
+function renderTeachers(){
+  const box=document.getElementById('teacherList');
+  if(!teachers.length){box.innerHTML='<div class="card"><div class="empty">현재 예약 가능한 선생님이 없습니다.</div></div>';return}
+  box.innerHTML='<div class="card"><div class="tgrid">'+teachers.map(t=>{
+    const p=profile(t);
+    return '<div class="teacher" onclick="pickTeacher(\''+t.replace(/'/g,"\\'")+'\')"><div class="avatar" style="background:'+p.color+'">'+avatarChar(t)+'</div><div class="info"><h3>'+t+' 선생님</h3><p>'+p.desc+'</p></div></div>';
+  }).join('')+'</div></div>';
+}
+function pickTeacher(t){sel.teacher=t;sel.mode=null;sel.slot=null;
+  const my=allSlots.filter(s=>s.teacher===t);
+  const modes=Array.from(new Set(my.map(s=>s.mode).filter(Boolean)));
+  // 모드 세그먼트
+  const seg=document.getElementById('modeSeg');
+  if(modes.length>1){
+    sel.mode=null;
+    seg.innerHTML='<button onclick="pickMode(\'\')" class="on" id="segAll">전체</button>'+modes.map(m=>'<button onclick="pickMode(\''+m+'\')">'+(m==='온라인'?'비대면':m)+'</button>').join('');
+    seg.classList.remove('hidden');
+  }else if(modes.length===1){
+    sel.mode=null; seg.classList.add('hidden');
+  }else{ seg.classList.add('hidden'); }
+  document.getElementById('s2title').innerText=showName(t)+' 선생님 · 예약 가능 시간';
+  renderTimes();
+  goStep(2);
+}
+function pickMode(m){sel.mode=m||null;
+  document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.remove('on'));
+  event.target.classList.add('on');
+  renderTimes();
+}
+function renderTimes(){
+  const box=document.getElementById('timeList');
+  let my=allSlots.filter(s=>s.teacher===sel.teacher);
+  if(sel.mode) my=my.filter(s=>s.mode===sel.mode);
+  my.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  if(!my.length){box.innerHTML='<div class="empty">선택 가능한 시간이 없습니다.</div>';return}
+  // 날짜별 그룹
+  const byDate={};
+  my.forEach(s=>{(byDate[s.date]=byDate[s.date]||[]).push(s)});
+  box.innerHTML=Object.keys(byDate).sort().map(date=>{
+    const items=byDate[date].map(s=>{
+      const cls=s.mode==='온라인'?'online':(s.mode==='대면'?'offline':'');
+      const mt=s.mode?'<span class="mt">'+(s.mode==='온라인'?'비대면':s.mode)+'</span>':'';
+      return '<div class="time '+cls+'" onclick=\'pickTime('+JSON.stringify(s).replace(/'/g,"&#39;")+')\'>'+s.time+mt+'</div>';
+    }).join('');
+    return '<div class="daygroup"><div class="d">'+formatDate(date)+'</div><div class="times">'+items+'</div></div>';
+  }).join('');
+}
+function pickTime(s){sel.slot=s;
+  const modeTxt=s.mode?(s.mode==='온라인'?'비대면':s.mode):'';
+  document.getElementById('bookSummary').innerHTML='<b>'+showName(sel.teacher)+' 선생님</b><br>'+formatDate(s.date)+' '+s.time+(modeTxt?' <span class="mtag '+(s.mode==='온라인'?'online':'offline')+'">'+modeTxt+'</span>':'');
+  document.getElementById('formErr').innerHTML='';
+  goStep(3);
+}
+function goStep(n){['step1','step2','step3','stepDone'].forEach((id,i)=>{document.getElementById(id).classList.toggle('hidden',i!==(n-1))});window.scrollTo(0,0)}
+async function submit(){
+  const name=document.getElementById('pName').value.trim();
+  const phone=document.getElementById('pPhone').value.trim();
+  const student=document.getElementById('pStudent').value.trim();
+  const errBox=document.getElementById('formErr');
+  if(!name||!phone){errBox.innerHTML='<div class="err">이름과 연락처를 입력해주세요.</div>';return}
+  const btn=document.getElementById('submitBtn');btn.disabled=true;btn.innerText='예약 처리 중...';
+  try{
+    await api({action:'publicBook',eventId:sel.slot.eventId,name,phone,student,mode:sel.slot.mode});
+    const modeTxt=sel.slot.mode?(sel.slot.mode==='온라인'?'비대면':sel.slot.mode):'';
+    document.getElementById('doneText').innerHTML=showName(sel.teacher)+' 선생님<br><b>'+formatDate(sel.slot.date)+' '+sel.slot.time+'</b> '+modeTxt+'<br><br>예약자: '+name+'<br>연락처: '+phone+(student?'<br>학생: '+student:'');
+    goStep(4);
+  }catch(err){
+    errBox.innerHTML='<div class="err">'+err.message+'</div>';
+    btn.disabled=false;btn.innerText='예약 확정하기';
+    if(String(err.message).includes('이미 예약')){
+      // 빈 시간 새로고침
+      try{const data=await api({action:'publicList',range:RANGE});allSlots=data.slots||[];}catch(e){}
+    }
+  }
+}
+loadAll();
+</script>
+</body></html>
