@@ -76,7 +76,7 @@ module.exports = async function handler(req, res){
             time: start.slice(11, 16),
             duration,
             teacher: p.teacher || String(ev.summary || '').replace(/^(\[예약완료\]\s*|예약 (가능|완료) - )/, ''),
-            booked: p.status === 'booked' || /\[예약\s*완료\]/.test(String(ev.summary || '')),
+            booked: p.status === 'booked' || /\[예약\s*완료\]/.test(String(ev.summary || '')) || (!!p.memo && /(학부모|학생|연락처|온라인 예약)/.test(String(p.memo))),
             memo: p.memo || '',
             mode: p.mode || (/\[온라인\]/.test(String(ev.summary||''))?'온라인':(/\[대면\]/.test(String(ev.summary||''))?'대면':''))
           };
@@ -117,7 +117,7 @@ module.exports = async function handler(req, res){
             time: start.slice(11, 16),
             duration,
             teacher: p.teacher || String(ev.summary || '').replace(/^(\[예약완료\]\s*|예약 (가능|완료) - )/, ''),
-            booked: p.status === 'booked' || /\[예약\s*완료\]/.test(String(ev.summary || '')),
+            booked: p.status === 'booked' || /\[예약\s*완료\]/.test(String(ev.summary || '')) || (!!p.memo && /(학부모|학생|연락처|온라인 예약)/.test(String(p.memo))),
             memo: p.memo || '',
             mode: p.mode || (/\[온라인\]/.test(String(ev.summary||''))?'온라인':(/\[대면\]/.test(String(ev.summary||''))?'대면':''))
           };
