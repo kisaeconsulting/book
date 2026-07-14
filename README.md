@@ -1,5 +1,5 @@
 {
-  "name": "internal-reservation-calendar-auto",
+  "name": "booking-parent-site",
   "private": true,
   "version": "1.0.0",
   "dependencies": {
